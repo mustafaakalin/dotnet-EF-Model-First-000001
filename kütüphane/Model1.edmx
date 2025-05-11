@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Books" EntityType="Model1.Store.Books" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Members" EntityType="Model1.Store.Members" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Actions" EntityType="Model1.Store.Actions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MembersBooks" EntityType="Model1.Store.MembersBooks" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="MembersActions" Association="Model1.Store.MembersActions">
+      <End Role="Members" EntitySet="Members" />
+      <End Role="Actions" EntitySet="Actions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MembersBooks_Members" Association="Model1.Store.FK_MembersBooks_Members">
+      <End Role="Members" EntitySet="Members" />
+      <End Role="MembersBooks" EntitySet="MembersBooks" />
+    </AssociationSet>
+    <AssociationSet Name="FK_MembersBooks_Books" Association="Model1.Store.FK_MembersBooks_Books">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="MembersBooks" EntitySet="MembersBooks" />
+    </AssociationSet>
+    <AssociationSet Name="BooksActions" Association="Model1.Store.BooksActions">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="Actions" EntitySet="Actions" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="bookNo" />
+    </Key>
+    <Property Name="bookNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="bookName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="writer" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="printDate" Type="smallint" Nullable="false" />
+    <Property Name="ActionsId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Members">
+    <Key>
+      <PropertyRef Name="tcID" />
+    </Key>
+    <Property Name="tcID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nameSurname" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="dob" Type="datetime" Nullable="false" />
+    <Property Name="address" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="phone" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Actions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="deliveryDate" Type="datetime" Nullable="false" />
+    <Property Name="purchaseDate" Type="datetime" Nullable="false" />
+    <Property Name="isDelivery" Type="bit" Nullable="false" />
+    <Property Name="Members_tcID" Type="bigint" Nullable="false" />
+    <Property Name="Books_bookNo" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MembersBooks">
+    <Key>
+      <PropertyRef Name="Members_tcID" />
+      <PropertyRef Name="Books_bookNo" />
+    </Key>
+    <Property Name="Members_tcID" Type="bigint" Nullable="false" />
+    <Property Name="Books_bookNo" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="MembersActions">
+    <End Role="Members" Type="Model1.Store.Members" Multiplicity="1" />
+    <End Role="Actions" Type="Model1.Store.Actions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Members">
+        <PropertyRef Name="tcID" />
+      </Principal>
+      <Dependent Role="Actions">
+        <PropertyRef Name="Members_tcID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="BooksActions">
+    <End Role="Books" Type="Model1.Store.Books" Multiplicity="1" />
+    <End Role="Actions" Type="Model1.Store.Actions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="bookNo" />
+      </Principal>
+      <Dependent Role="Actions">
+        <PropertyRef Name="Books_bookNo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MembersBooks_Members">
+    <End Role="Members" Type="Model1.Store.Members" Multiplicity="1" />
+    <End Role="MembersBooks" Type="Model1.Store.MembersBooks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Members">
+        <PropertyRef Name="tcID" />
+      </Principal>
+      <Dependent Role="MembersBooks">
+        <PropertyRef Name="Members_tcID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_MembersBooks_Books">
+    <End Role="MembersBooks" Type="Model1.Store.MembersBooks" Multiplicity="*" />
+    <End Role="Books" Type="Model1.Store.Books" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="bookNo" />
+      </Principal>
+      <Dependent Role="MembersBooks">
+        <PropertyRef Name="Books_bookNo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Books" EntityType="Model1.Books" />
+          <EntitySet Name="Members" EntityType="Model1.Members" />
+          <EntitySet Name="Actions" EntityType="Model1.Actions" />
+          <AssociationSet Name="MembersActions" Association="Model1.MembersActions">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Actions" EntitySet="Actions" />
+          </AssociationSet>
+          <AssociationSet Name="MembersBooks" Association="Model1.MembersBooks">
+            <End Role="Members" EntitySet="Members" />
+            <End Role="Books" EntitySet="Books" />
+          </AssociationSet>
+          <AssociationSet Name="BooksActions" Association="Model1.BooksActions">
+            <End Role="Books" EntitySet="Books" />
+            <End Role="Actions" EntitySet="Actions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Books">
+          <Key>
+            <PropertyRef Name="bookNo" />
+          </Key>
+          <Property Name="bookNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="bookName" Type="String" Nullable="false" />
+          <Property Name="writer" Type="String" Nullable="false" />
+          <Property Name="printDate" Type="Int16" Nullable="false" />
+          <Property Name="ActionsId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Members" Relationship="Model1.MembersBooks" FromRole="Books" ToRole="Members" />
+          <NavigationProperty Name="Actions" Relationship="Model1.BooksActions" FromRole="Books" ToRole="Actions" />
+        </EntityType>
+        <EntityType Name="Members">
+          <Key>
+            <PropertyRef Name="tcID" />
+          </Key>
+          <Property Name="tcID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nameSurname" Type="String" Nullable="false" />
+          <Property Name="dob" Type="DateTime" Nullable="false" />
+          <Property Name="address" Type="String" Nullable="false" />
+          <Property Name="phone" Type="String" Nullable="false" />
+          <NavigationProperty Name="Actions" Relationship="Model1.MembersActions" FromRole="Members" ToRole="Actions" />
+          <NavigationProperty Name="Books" Relationship="Model1.MembersBooks" FromRole="Members" ToRole="Books" />
+        </EntityType>
+        <EntityType Name="Actions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="deliveryDate" Type="DateTime" Nullable="false" />
+          <Property Name="purchaseDate" Type="DateTime" Nullable="false" />
+          <Property Name="isDelivery" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Member" Relationship="Model1.MembersActions" FromRole="Actions" ToRole="Members" />
+          <Property Name="Members_tcID" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Book" Relationship="Model1.BooksActions" FromRole="Actions" ToRole="Books" />
+          <Property Name="Books_bookNo" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="MembersActions">
+          <End Type="Model1.Members" Role="Members" Multiplicity="1" />
+          <End Type="Model1.Actions" Role="Actions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Members">
+              <PropertyRef Name="tcID" />
+            </Principal>
+            <Dependent Role="Actions">
+              <PropertyRef Name="Members_tcID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="MembersBooks">
+          <End Type="Model1.Members" Role="Members" Multiplicity="*" />
+          <End Type="Model1.Books" Role="Books" Multiplicity="*" />
+        </Association>
+        <Association Name="BooksActions">
+          <End Type="Model1.Books" Role="Books" Multiplicity="1" />
+          <End Type="Model1.Actions" Role="Actions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Books">
+              <PropertyRef Name="bookNo" />
+            </Principal>
+            <Dependent Role="Actions">
+              <PropertyRef Name="Books_bookNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container1">
+    <EntitySetMapping Name="Books">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Books)">
+        <MappingFragment StoreEntitySet="Books">
+          <ScalarProperty Name="bookNo" ColumnName="bookNo" />
+          <ScalarProperty Name="bookName" ColumnName="bookName" />
+          <ScalarProperty Name="writer" ColumnName="writer" />
+          <ScalarProperty Name="printDate" ColumnName="printDate" />
+          <ScalarProperty Name="ActionsId" ColumnName="ActionsId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Members">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Members)">
+        <MappingFragment StoreEntitySet="Members">
+          <ScalarProperty Name="tcID" ColumnName="tcID" />
+          <ScalarProperty Name="nameSurname" ColumnName="nameSurname" />
+          <ScalarProperty Name="dob" ColumnName="dob" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Actions">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Actions)">
+        <MappingFragment StoreEntitySet="Actions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="deliveryDate" ColumnName="deliveryDate" />
+          <ScalarProperty Name="purchaseDate" ColumnName="purchaseDate" />
+          <ScalarProperty Name="isDelivery" ColumnName="isDelivery" />
+          <ScalarProperty Name="Members_tcID" ColumnName="Members_tcID" />
+          <ScalarProperty Name="Books_bookNo" ColumnName="Books_bookNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="MembersBooks" TypeName="Model1.MembersBooks" StoreEntitySet="MembersBooks">
+      <EndProperty Name="Members">
+        <ScalarProperty Name="tcID" ColumnName="Members_tcID" />
+      </EndProperty>
+      <EndProperty Name="Books">
+        <ScalarProperty Name="bookNo" ColumnName="Books_bookNo" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

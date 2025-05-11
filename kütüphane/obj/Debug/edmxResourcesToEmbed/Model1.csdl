@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="Model1Container1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Books" EntityType="Model1.Books" />
+    <EntitySet Name="Members" EntityType="Model1.Members" />
+    <EntitySet Name="Actions" EntityType="Model1.Actions" />
+    <AssociationSet Name="MembersActions" Association="Model1.MembersActions">
+      <End Role="Members" EntitySet="Members" />
+      <End Role="Actions" EntitySet="Actions" />
+    </AssociationSet>
+    <AssociationSet Name="MembersBooks" Association="Model1.MembersBooks">
+      <End Role="Members" EntitySet="Members" />
+      <End Role="Books" EntitySet="Books" />
+    </AssociationSet>
+    <AssociationSet Name="BooksActions" Association="Model1.BooksActions">
+      <End Role="Books" EntitySet="Books" />
+      <End Role="Actions" EntitySet="Actions" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Books">
+    <Key>
+      <PropertyRef Name="bookNo" />
+    </Key>
+    <Property Name="bookNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="bookName" Type="String" Nullable="false" />
+    <Property Name="writer" Type="String" Nullable="false" />
+    <Property Name="printDate" Type="Int16" Nullable="false" />
+    <Property Name="ActionsId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Members" Relationship="Model1.MembersBooks" FromRole="Books" ToRole="Members" />
+    <NavigationProperty Name="Actions" Relationship="Model1.BooksActions" FromRole="Books" ToRole="Actions" />
+  </EntityType>
+  <EntityType Name="Members">
+    <Key>
+      <PropertyRef Name="tcID" />
+    </Key>
+    <Property Name="tcID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nameSurname" Type="String" Nullable="false" />
+    <Property Name="dob" Type="DateTime" Nullable="false" />
+    <Property Name="address" Type="String" Nullable="false" />
+    <Property Name="phone" Type="String" Nullable="false" />
+    <NavigationProperty Name="Actions" Relationship="Model1.MembersActions" FromRole="Members" ToRole="Actions" />
+    <NavigationProperty Name="Books" Relationship="Model1.MembersBooks" FromRole="Members" ToRole="Books" />
+  </EntityType>
+  <EntityType Name="Actions">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="deliveryDate" Type="DateTime" Nullable="false" />
+    <Property Name="purchaseDate" Type="DateTime" Nullable="false" />
+    <Property Name="isDelivery" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="Member" Relationship="Model1.MembersActions" FromRole="Actions" ToRole="Members" />
+    <Property Name="Members_tcID" Type="Int64" Nullable="false" />
+    <NavigationProperty Name="Book" Relationship="Model1.BooksActions" FromRole="Actions" ToRole="Books" />
+    <Property Name="Books_bookNo" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="MembersActions">
+    <End Type="Model1.Members" Role="Members" Multiplicity="1" />
+    <End Type="Model1.Actions" Role="Actions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Members">
+        <PropertyRef Name="tcID" />
+      </Principal>
+      <Dependent Role="Actions">
+        <PropertyRef Name="Members_tcID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="MembersBooks">
+    <End Type="Model1.Members" Role="Members" Multiplicity="*" />
+    <End Type="Model1.Books" Role="Books" Multiplicity="*" />
+  </Association>
+  <Association Name="BooksActions">
+    <End Type="Model1.Books" Role="Books" Multiplicity="1" />
+    <End Type="Model1.Actions" Role="Actions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Books">
+        <PropertyRef Name="bookNo" />
+      </Principal>
+      <Dependent Role="Actions">
+        <PropertyRef Name="Books_bookNo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

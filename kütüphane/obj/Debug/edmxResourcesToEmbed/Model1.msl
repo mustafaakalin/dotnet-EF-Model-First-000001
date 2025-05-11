@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container1">
+    <EntitySetMapping Name="Books">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Books)">
+        <MappingFragment StoreEntitySet="Books">
+          <ScalarProperty Name="bookNo" ColumnName="bookNo" />
+          <ScalarProperty Name="bookName" ColumnName="bookName" />
+          <ScalarProperty Name="writer" ColumnName="writer" />
+          <ScalarProperty Name="printDate" ColumnName="printDate" />
+          <ScalarProperty Name="ActionsId" ColumnName="ActionsId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Members">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Members)">
+        <MappingFragment StoreEntitySet="Members">
+          <ScalarProperty Name="tcID" ColumnName="tcID" />
+          <ScalarProperty Name="nameSurname" ColumnName="nameSurname" />
+          <ScalarProperty Name="dob" ColumnName="dob" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Actions">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Actions)">
+        <MappingFragment StoreEntitySet="Actions">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="deliveryDate" ColumnName="deliveryDate" />
+          <ScalarProperty Name="purchaseDate" ColumnName="purchaseDate" />
+          <ScalarProperty Name="isDelivery" ColumnName="isDelivery" />
+          <ScalarProperty Name="Members_tcID" ColumnName="Members_tcID" />
+          <ScalarProperty Name="Books_bookNo" ColumnName="Books_bookNo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="MembersBooks" TypeName="Model1.MembersBooks" StoreEntitySet="MembersBooks">
+      <EndProperty Name="Members">
+        <ScalarProperty Name="tcID" ColumnName="Members_tcID" />
+      </EndProperty>
+      <EndProperty Name="Books">
+        <ScalarProperty Name="bookNo" ColumnName="Books_bookNo" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>
